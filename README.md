@@ -6,6 +6,8 @@ After about a week of work and multiple parts orders and prints I just finished 
 
 I have a BL Touch installed and am using the original touch screen housing, but have installed an aftermarket screen so that the latest version of Klipper can be used instead of [Desuuuu's outdated fork](https://github.com/Desuuuu/klipper).
 
+:warning: TODO: Photo of printer with Benchy
+
 <hr>
 
 ## Instructions
@@ -83,6 +85,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 1. Unplug the printer, wait for the power supply capacitors to discharge, and flip it on it’s side.
 2. Remove the bottom cover to access the electronics compartment. 
 3. I don’t believe it’s possible to continue using the SD Card reader located inside the touchscreen housing. Some Googling told me the connector is referred to as a `8 wire Molex PicoBlade` and I was unable to find a cable to connect this to the Raspberry Pi. However, if you did manage to puzzle this out, you would probably be able to make it work if you configure Debian to mount the SD Card at your Klipper Virtual SD card path?
+4. :warning: TODO: Finish
 
 <hr>
 
@@ -91,6 +94,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 1. Connect the Pi to the microcontroller and, optionally, any other peripherals like a webcam. Make sure you use the blue USB 3.0 ports, if they’re available. 
 2. `speaker-test`
 3. Reinstall the bottom cover and flip the printer back upright.
+4. :warning: TODO: Finish
 
 <hr>
 
@@ -127,10 +131,10 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 ### Step 7: (Configuring Macros & Slicer):
 
-1. 
+1. :warning: TODO: Finish
 
 <hr>
 
 ### Step 8 (Print a Klipper Benchy):
 
-1. Enjoy the fruits of your labor!
+1. :warning: TODO: Show closeup of Benchy on Printer Bed
