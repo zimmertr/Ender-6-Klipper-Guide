@@ -50,6 +50,8 @@ Before you flash anything to your printer or take anything apart, you need to us
   - Used for connecting the 16AWG Wiring to the Ender 6's Power Supply
 - 20-22 Dupont Wires: [here](https://www.amazon.com/IWISS-1550PCS-Connector-Headers-Balancer/dp/B08X6C7PZM/)
   - Used for connecting the Buck Converter to the Raspberry Pi. 
+- *Optional:* Noctua NF-A4x10 Fan: [here](https://www.amazon.com/dp/B07DXS86G7)
+  - You can optonally install a Noctua fan alongside the Raspberry Pi and Buck Converter on the gantry rails to keep things cool.
 - *Optional*: M3 T Nuts
   - Used to mount the Pi/Buck Converter part on the rails in the electronics compartment. You could print these instead.
 - Optional: USB Power Blocker: https://www.amazon.com/PortaPow-Cased-Power-Blocker-Single/dp/B094FYL9QT
