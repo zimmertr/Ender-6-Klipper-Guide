@@ -6,6 +6,8 @@ After about a week of work and multiple parts orders and prints I just finished 
 
 I have a BL Touch installed and am using the original touch screen housing, but have installed an aftermarket screen so that the latest version of Klipper can be used instead of [Desuuuu's outdated fork](https://github.com/Desuuuu/klipper).
 
+I install the Raspberry Pi inside the electronics compartment of the printer which greatly reduces wifi throughput. You may wish to install a wirelss USB adapter with an external antenna if this is a problem for you. I may extend this guide with instructions to accomplish that in the future. 
+
 :warning: TODO: Photo of printer with Benchy
 
 <hr>
@@ -23,7 +25,8 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 - PIT TFT43 Screen Adapter: [here](https://www.thingiverse.com/thing:5246155)
   - Desuuuu’s fork of Klipper that made the default touchscreen for the Ender 6 function was never merged upstream, so it does not work with Klipper. In order to continue having a touchscreen and use the latest version of Klipper, you have to replace it with one that is compatible. The `PI TFT43` just so happens to fit almost perfectly, but does require an adapter.
-- 3x M3 T-Nuts: [here](https://www.thingiverse.com/thing:3050607)
+- Optional: Gantry Mounted Fan
+- Optional: 3x M3 T-Nuts: [here](https://www.thingiverse.com/thing:3050607)
   - These are only needed if you wish to save a little bit of money and avoid purchasing them in bulk. But you need a way to mount the Raspberry Pi/Buck Converter part on the rails in your electronics compartment. 
 
 **Parts you need to have/buy (~$200):**
@@ -126,7 +129,11 @@ Before you flash anything to your printer or take anything apart, you need to us
 8. Power everything back off and attach the T-Nuts to the bottom of the mounting bracket. Secure it against the rail on your printer. Tidy up all of the cabling.
    ![https://i.imgur.com/eXHYA8H.jpeg](https://i.imgur.com/eXHYA8H.jpeg style="zoom:25%;" align="left")
 
-9. Reinstall the bottom cover and flip the printer back upright.
+9. Optional: Attach the Noctua fan to the T-Nuts and the USB Port of the Raspberry Pi.
+
+   ![img](![https://i.imgur.com/eC3yDXB.png](https://i.imgur.com/eC3yDXB.png style="zoom:25%;" align="left")
+
+10. Reinstall the bottom cover and flip the printer back upright.
 
 <hr>
 
