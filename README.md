@@ -3,6 +3,8 @@
 * [Summary](#summary)
 * [Instructions](#instructions)
   * [Step 1 (Printing and Purchasing)](#step-1-printing-and-purchasing)
+    * [Parts to Print](#parts-to-print)
+    * [Parts to Purchase](#parts-to-purchase)
   * [Step 2 (Flash the Printer’s Microcontroller)](#step-2-flash-the-printers-microcontroller)
   * [Step 3 (Install Klipper on the Raspberry Pi)](#step-3-install-klipper-on-the-raspberry-pi)
   * [Step 4 (Install the Replacement Touchscreen)](#step-4-install-the-replacement-touchscreen)
