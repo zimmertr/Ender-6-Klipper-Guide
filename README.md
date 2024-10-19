@@ -116,11 +116,11 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 1. Unplug the printer, and wait for the power supply capacitors to discharge. Flip it on it’s side and remove the bottom cover to access the electronics compartment. Finally, unscrew the touch screen housing and remove it from the printer. There are four T15 screws located near the microcontroller and two T8 screws each on the bottom and back of the housing. Remove the original screen from the housing, but keep the rubber gasket in place. 
 2. Connect the DSI cable to one of the Raspberry Pi's `CAM/DISP` header and the header on the `PI TFT43` screen. The orientation of the cable matters as there are only pins on one side of the ribbon. On the Raspberry Pi, the pins should face towards the USB ports. On the `PI TFT43`, the pins should face away from the screen.
-   ![https://i.imgur.com/UHSxvHq.png](https://i.imgur.com/UHSxvHq.png style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/UHSxvHq.png" alt="https://i.imgur.com/UHSxvHq.png" style="zoom:25%;" align="left"/>
 3. Power on the Pi with a USB-C cable and test that the screen works. After a moment, you should see Debian boot and Klipper Screen should load. Adjust the brightness wheel on the `PI TFT43` until you are satisfied and power off the Pi with the power button. The brightness wheel will no longer be accessible once it is installed inside the housing.
-   ![https://i.imgur.com/9wJBWLI.jpeg](https://i.imgur.com/9wJBWLI.jpeg style="zoom:25%;" align="left";)
+   <img src="https://i.imgur.com/9wJBWLI.jpeg" alt="https://i.imgur.com/9wJBWLI.jpeg" style="zoom:25%;" align="left"/>
 4. Mount the screen onto the printed adapter, being extra careful not to overtighten the screws as doing so could break the screen. Power on the Pi once more to confirm there is no backlight bleed from the screws being too tight. Afterwards, mount the `PI TFT43` into the screen housing being sure it is oriented correctly. (The brightness scroll wheel should face the top of the housing and be near the SD Card slot) I don’t believe it’s possible to continue using the SD Card reader located inside the touchscreen housing. Some Googling told me the connector is referred to as a `8 wire Molex PicoBlade` and I was unable to find a cable to connect this to the Raspberry Pi. However, if you did manage to puzzle this out, you would probably be able to make it work if you configure Debian to mount the SD Card at your Klipper Virtual SD card path. I left the speaker inside the electronics compartment disconnected for the same reason. You could probably replace this speaker with a USB device if you so desired.
-   ![https://i.imgur.com/BOZJG0B.png](https://i.imgur.com/BOZJG0B.png style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/BOZJG0B.png" alt="https://i.imgur.com/BOZJG0B.png" style="zoom:25%;" align="left"/>
 5. Put the housing back together and screw it back into place on the printer.
 
 <hr>
@@ -136,24 +136,24 @@ Before you flash anything to your printer or take anything apart, you need to us
    <img src="https://i.imgur.com/BD5eLfS.jpeg" alt="https://i.imgur.com/BD5eLfS.jpeg" style="zoom:25%;" align="left"/>
 
 4. Twist the voltage regular knob on the buck converter to step it down to 5v. 
-   ![https://i.imgur.com/f4SneAm.jpeg](https://i.imgur.com/f4SneAm.jpeg style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/f4SneAm.jpeg" alt="https://i.imgur.com/f4SneAm.jpeg" style="zoom:25%;" align="left"/>
 
 5. Power the printer back off and connect the 20-22AWG dupont connectors to the output of the buck converter. Optionally use a multimeter to doublecheck the output before connecting it to your Raspberry Pi to avoid releasing any magic smoke.
-   ![https://i.imgur.com/LM8C8l5.png](https://i.imgur.com/LM8C8l5.png style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/LM8C8l5.png" alt="https://i.imgur.com/LM8C8l5.png" style="zoom:25%;" align="left"/>
 
 6. Connect the wires to the 5V and Ground GPIO pins on your Raspberry Pi. You'll likely need to consult a [pinout guide](https://vilros.com/pages/raspberry-pi-5-pinout) to identify the correct pins. 
-   ![https://i.imgur.com/lunMQlj.jpeg](https://i.imgur.com/lunMQlj.jpeg style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/lunMQlj.jpeg" alt="https://i.imgur.com/lunMQlj.jpeg" style="zoom:25%;" align="left"/>
 
 7. Double check everything is connected correctly and power the printer on. The Raspberry Pi should boot up and KlipperScreen should load and Moonsail should connect to your printer. Try and perform an action like Home X/Y/Z to confirm the printer is operational. 
-   ![https://i.imgur.com/RBXbVXw.png](https://i.imgur.com/RBXbVXw.png style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/RBXbVXw.png" alt="https://i.imgur.com/RBXbVXw.png" style="zoom:25%;" align="left"/>
 
 8. Power everything back off and attach the T-Nuts to the bottom of the mounting bracket. Secure it against the gantry rail on your printer. Tidy up all of the cabling.
-   ![https://i.imgur.com/eXHYA8H.jpeg](https://i.imgur.com/eXHYA8H.jpeg style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/eXHYA8H.jpeg" alt="https://i.imgur.com/eXHYA8H.jpeg" style="zoom:25%;" align="left"/>
 
 9. Optional: Attach the Noctua fan to the T-Nuts and the USB Port of the Raspberry Pi and mount in next to the raspberry pi and buck converter adapter.
-   ![https://i.imgur.com/mvI22Qy.jpeg](https://i.imgur.com/mvI22Qy.jpeg style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/mvI22Qy.jpeg" alt="https://i.imgur.com/mvI22Qy.jpeg" style="zoom:25%;" align="left"/>
 
-   ![https://i.imgur.com/eC3yDXB.png](https://i.imgur.com/eC3yDXB.png style="zoom:25%;" align="left")
+   <img src="https://i.imgur.com/eC3yDXB.png" alt="https://i.imgur.com/eC3yDXB.png" style="zoom:25%;" align="left"/>
 
 10. Reinstall the bottom cover and flip the printer back upright.
 
