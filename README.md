@@ -9,8 +9,8 @@
     + [Step 3 - Setting up Klipper on the Raspberry Pi](#step-3---setting-up-klipper-on-the-raspberry-pi)
     + [Step 4 - Installing the Replacement Touchscreen](#step-4---installing-the-replacement-touchscreen)
     + [Step 5 - Installing the Raspberry Pi and Buck Converter](#step-5---installing-the-raspberry-pi-and-buck-converter)
-    + [Step 6 - Configuring the Z-Offset and Bed Mesh](#step-6---configuring-the-z-offset-and-bed-mesh)
-    + [Step 7 - Configure Macros and Slicer](#step-7---configure-macros-and-slicer)
+    + [Step 6 - Configuring the Z-Offset & Bed Mesh](#step-6---configuring-the-z-offset---bed-mesh)
+    + [Step 7 - Configure Macros & Slicer](#step-7---configure-macros---slicer)
     + [Optional Steps](#optional-steps)
       - [Configure a Webcam](#configure-a-webcam)
       - [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
@@ -159,7 +159,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 6:- (Configuring the Z-Offset & Bed Mesh
+### Step 6 - Configuring the Z-Offset & Bed Mesh
 
 1. If everything is installed correctly, when you power on the printer the Raspberry Pi and Pi TFT43 should turn on as well and Klipper should load.
 
@@ -182,7 +182,8 @@ Before you flash anything to your printer or take anything apart, you need to us
    ```
 
 <hr>
-### Step 7:- (Configure Macros & Slicer
+
+### Step 7 - Configure Macros & Slicer
 
 1. :warning: TODO: Finish
 
