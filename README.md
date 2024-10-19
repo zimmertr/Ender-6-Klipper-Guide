@@ -1,20 +1,20 @@
 # Ender 6 Klipper Guide
 
-- [Summary](#summary)
-- [Instructions](#instructions)
-  * [Step 1 (Printing and Purchasing):](#step-1--printing-and-purchasing--)
-    + [Parts to Print:](#parts-to-print-)
-    + [Parts to Purchase:](#parts-to-purchase-)
-  * [Step 2 (Flashing the Printer’s Microcontroller):](#step-2--flashing-the-printer-s-microcontroller--)
-  * [Step 3 (Setting up Klipper on the Raspberry Pi):](#step-3--setting-up-klipper-on-the-raspberry-pi--)
-  * [Step 4 (Installing the Replacement Touchscreen):](#step-4--installing-the-replacement-touchscreen--)
-  * [Step 5 (Installing the Raspberry Pi and Buck Converter):](#step-5--installing-the-raspberry-pi-and-buck-converter--)
-  * [Step 6: (Configuring the Z-Offset & Bed Mesh):](#step-6---configuring-the-z-offset---bed-mesh--)
-  * [Step 7: (Configure Macros & Slicer):](#step-7---configure-macros---slicer--)
-  * [Optional Steps](#optional-steps)
-    + [Configure a Webcam:](#configure-a-webcam-)
-    + [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
-    + [Print a Klipper Benchy](#print-a-klipper-benchy)
+  * [Summary](#summary)
+  * [Instructions](#instructions)
+    + [Step 1 - Printing and Purchasing](#step-1---printing-and-purchasing)
+      - [Parts to Print:](#parts-to-print-)
+      - [Parts to Purchase:](#parts-to-purchase-)
+    + [Step 2 - Flashing the Printer’s Microcontroller](#step-2---flashing-the-printer-s-microcontroller)
+    + [Step 3 - Setting up Klipper on the Raspberry Pi](#step-3---setting-up-klipper-on-the-raspberry-pi)
+    + [Step 4 - Installing the Replacement Touchscreen](#step-4---installing-the-replacement-touchscreen)
+    + [Step 5 - Installing the Raspberry Pi and Buck Converter](#step-5---installing-the-raspberry-pi-and-buck-converter)
+    + [Step 6:- (Configuring the Z-Offset & Bed Mesh](#step-6----configuring-the-z-offset---bed-mesh)
+    + [Step 7:- (Configure Macros & Slicer](#step-7----configure-macros---slicer)
+    + [Optional Steps](#optional-steps)
+      - [Configure a Webcam:](#configure-a-webcam-)
+      - [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
+      - [Print a Klipper Benchy](#print-a-klipper-benchy)
 
 <hr>
 
@@ -30,7 +30,7 @@ With this guide, you'll be able to retain the use of the touch screen housing, b
 
 ## Instructions
 
-### Step 1 (Printing and Purchasing):
+### Step 1 - Printing and Purchasing
 
 Before you flash anything to your printer or take anything apart, you need to use it to print a few parts.
 
@@ -80,7 +80,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 2 (Flashing the Printer’s Microcontroller):
+### Step 2 - Flashing the Printer’s Microcontroller
 
 1. Clone the [Klipper repo](https://github.com/Klipper3d/klipper) and change into the directory.
 2. Run make menuconfig and provide the following Configuration
@@ -90,7 +90,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 3 (Setting up Klipper on the Raspberry Pi):
+### Step 3 - Setting up Klipper on the Raspberry Pi
 
 1. Download [Raspberry Pi Imager](https://www.raspberrypi.com/software/) and flash `Raspberry Pi OS Lite (64-bit)` to your MicroSD Card. Before flashing, make sure you configure the installer to connect to your wireless network and enable SSH. 
 
@@ -112,7 +112,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 4 (Installing the Replacement Touchscreen):
+### Step 4 - Installing the Replacement Touchscreen
 
 1. Unplug the printer, and wait for the power supply capacitors to discharge. Flip it on it’s side and remove the bottom cover to access the electronics compartment. Finally, unscrew the touch screen housing and remove it from the printer. There are four T15 screws located near the microcontroller and two T8 screws each on the bottom and back of the housing. Remove the original screen from the housing, but keep the rubber gasket in place. 
 2. Connect the DSI cable to one of the Raspberry Pi's `CAM/DISP` header and the header on the `PI TFT43` screen. The orientation of the cable matters as there are only pins on one side of the ribbon. On the Raspberry Pi, the pins should face towards the USB ports. On the `PI TFT43`, the pins should face away from the screen.
@@ -125,7 +125,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 5 (Installing the Raspberry Pi and Buck Converter):
+### Step 5 - Installing the Raspberry Pi and Buck Converter
 
 1. Connect the Pi to the microcontroller using the MicroUSB cable and, optionally, any other peripherals like a webcam and wireless USB adapter. Make sure you use the blue USB 3.0 ports, if they’re available. If you're using a power blocker, go ahead and power on the Ender 6 and Raspberry Pi. At this point, if you've done everything correctly, Klipper should automatically detect your printer and KlipperScreen should appear on the screen.
 
@@ -159,7 +159,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 6: (Configuring the Z-Offset & Bed Mesh):
+### Step 6:- (Configuring the Z-Offset & Bed Mesh
 
 1. If everything is installed correctly, when you power on the printer the Raspberry Pi and Pi TFT43 should turn on as well and Klipper should load.
 
@@ -182,7 +182,7 @@ Before you flash anything to your printer or take anything apart, you need to us
    ```
 
 <hr>
-### Step 7: (Configure Macros & Slicer):
+### Step 7:- (Configure Macros & Slicer
 
 1. :warning: TODO: Finish
 
