@@ -52,29 +52,43 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 - Wifi Capable Raspberry Pi: [here](https://www.amazon.com/dp/B0CPWH8FL9)
   - I bought the 5, you can probably get away with something cheaper if you wish.
+
 - MicroSD Card
+
 - BIGTREETECH PI TFT43 Screen: [here](https://www.amazon.com/dp/B09791ZG1B)
+
 - Buck Converter: [here](https://www.amazon.com/dp/B07WQJ2GD6)
+
 - 50CM 22Pin -> 15Pin DSI Cable: [here](https://www.amazon.com/dp/B0CXPJ7F6H)
   - I found that anything shorter will not reach adequately from the Touch screen housing into the electronics compartment. Additionally, the Raspberry Pi 5 uses a different DSI pinout than the `PI TFT43` touchscreen. So while it does come with a DSI cable, it is both too short and uses the incorrect pinout.
+
 - MicroUSB Cable
   - This is needed to connect the Pi to the Microcontroller. Mine is 24” long, but 12” would probably be sufficient. 
+
 - USB C Cable
   - This is only needed temporarily to power the Raspberry Pi for testing and configuration before you connect it to your power supply. I powered mine with my Macbook Pro charger.
+
 - M2.5 & M3 Screws & Nuts
   - The Raspberry Pi holes are M2.5 and the Buck Converter holes are M3. I used M2.5x10mm for the Raspberry Pi and M3x10 for the Buck Converter which allowed me to thread nuts on the other side of the adapter.
+
 - 16AWG Wiring: [here](https://www.amazon.com/gp/product/B0B9J91SJ8)
   - Used for wiring the Buck Converter with the Ender 6's power supply
+
 - 16-14AWG Spade Terminals: [here](https://www.amazon.com/gp/product/B000BW0YUS)
   - Used for connecting the 16AWG Wiring to the Ender 6's Power Supply
+
 - 20-22 Dupont Wires: [here](https://www.amazon.com/IWISS-1550PCS-Connector-Headers-Balancer/dp/B08X6C7PZM/)
   - Used for connecting the Buck Converter to the Raspberry Pi. 
+
 - Optional: USB Wireless Adapater: [here](https://www.amazon.com/dp/B0B94R78N7?psc=1&smid=ATVPDKIKX0DER)
   - Since the Rasberry Pi will be housed inside the electronics compartment, it will have poor wireless reception. You can optionally connect a USB wireless adapter to it to improve the signal by mounting it ouside of the printer.
+
 - *Optional:* Noctua NF-A4x10 Fan: [here](https://www.amazon.com/dp/B07DXS86G7)
   - You can optionally install a Noctua fan alongside the Raspberry Pi and Buck Converter on the gantry rails to keep things cool.
+
 - *Optional*: M3 T Nuts
   - Used to mount the Pi/Buck Converter part on the rails in the electronics compartment. You could print these instead.
+
 - Optional: USB Power Blocker: https://www.amazon.com/PortaPow-Cased-Power-Blocker-Single/dp/B094FYL9QT
   - When you power the printer and the raspberry Pi separately (Like via a USB-C cable for testing), the microcontroller will also receive power from the Pi through the USB cable. Using a power blocker on the Raspberry Pi can help prevent damage to your printer's microcontroller.
 
@@ -83,6 +97,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 ### Step 2 - Flashing the Printer’s Microcontroller
 
 1. Clone the [Klipper repo](https://github.com/Klipper3d/klipper) and change into the directory.
+
 2. Run make menuconfig and provide the following Configuration
    <img src="https://i.imgur.com/jxorWUx.png" alt="https://i.imgur.com/jxorWUx.png" style="zoom:25%;" />
 3. Save the configuration and run `make` to build the binary. 
@@ -115,12 +130,16 @@ Before you flash anything to your printer or take anything apart, you need to us
 ### Step 4 - Installing the Replacement Touchscreen
 
 1. Unplug the printer, and wait for the power supply capacitors to discharge. Flip it on it’s side and remove the bottom cover to access the electronics compartment. Finally, unscrew the touch screen housing and remove it from the printer. There are four T15 screws located near the microcontroller and two T8 screws each on the bottom and back of the housing. Remove the original screen from the housing, but keep the rubber gasket in place. 
+
 2. Connect the DSI cable to one of the Raspberry Pi's `CAM/DISP` header and the header on the `PI TFT43` screen. The orientation of the cable matters as there are only pins on one side of the ribbon. On the Raspberry Pi, the pins should face towards the USB ports. On the `PI TFT43`, the pins should face away from the screen.
    <img src="https://i.imgur.com/UHSxvHq.png" alt="https://i.imgur.com/UHSxvHq.png" style="zoom:25%;" align="left"/>
+
 3. Power on the Pi with a USB-C cable and test that the screen works. After a moment, you should see Debian boot and Klipper Screen should load. Adjust the brightness wheel on the `PI TFT43` until you are satisfied and power off the Pi with the power button. The brightness wheel will no longer be accessible once it is installed inside the housing.
    <img src="https://i.imgur.com/9wJBWLI.jpeg" alt="https://i.imgur.com/9wJBWLI.jpeg" style="zoom:25%;" align="left"/>
+
 4. Mount the screen onto the printed adapter, being extra careful not to overtighten the screws as doing so could break the screen. Power on the Pi once more to confirm there is no backlight bleed from the screws being too tight. Afterwards, mount the `PI TFT43` into the screen housing being sure it is oriented correctly. (The brightness scroll wheel should face the top of the housing and be near the SD Card slot) I don’t believe it’s possible to continue using the SD Card reader located inside the touchscreen housing. Some Googling told me the connector is referred to as a `8 wire Molex PicoBlade` and I was unable to find a cable to connect this to the Raspberry Pi. However, if you did manage to puzzle this out, you would probably be able to make it work if you configure Debian to mount the SD Card at your Klipper Virtual SD card path. I left the speaker inside the electronics compartment disconnected for the same reason. You could probably replace this speaker with a USB device if you so desired.
    <img src="https://i.imgur.com/BOZJG0B.png" alt="https://i.imgur.com/BOZJG0B.png" style="zoom:25%;" align="left"/>
+
 5. Put the housing back together and screw it back into place on the printer.
 
 <hr>
