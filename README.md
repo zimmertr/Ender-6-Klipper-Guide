@@ -48,7 +48,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 - Optional: 3x M3 T-Nuts: [here](https://www.thingiverse.com/thing:3050607)
   - These are only needed if you wish to save a little bit of money and avoid purchasing them. But you need a way to mount the Raspberry Pi/Buck Converter part on the rails in your electronics compartment.
 
-#### Parts to Buy:
+#### Parts to Purchase:
 
 - Wifi Capable Raspberry Pi: [here](https://www.amazon.com/dp/B0CPWH8FL9)
   - I bought the 5, you can probably get away with something cheaper if you wish.
