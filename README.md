@@ -3,8 +3,8 @@
   * [Summary](#summary)
   * [Instructions](#instructions)
     + [Step 1 - Printing and Purchasing](#step-1---printing-and-purchasing)
-      - [Parts to Print:](#parts-to-print-)
-      - [Parts to Purchase:](#parts-to-purchase-)
+      - [Parts to Print](#parts-to-print)
+      - [Parts to Purchase](#parts-to-purchase)
     + [Step 2 - Flashing the Printer’s Microcontroller](#step-2---flashing-the-printer-s-microcontroller)
     + [Step 3 - Setting up Klipper on the Raspberry Pi](#step-3---setting-up-klipper-on-the-raspberry-pi)
     + [Step 4 - Installing the Replacement Touchscreen](#step-4---installing-the-replacement-touchscreen)
@@ -12,7 +12,7 @@
     + [Step 6:- (Configuring the Z-Offset & Bed Mesh](#step-6----configuring-the-z-offset---bed-mesh)
     + [Step 7:- (Configure Macros & Slicer](#step-7----configure-macros---slicer)
     + [Optional Steps](#optional-steps)
-      - [Configure a Webcam:](#configure-a-webcam-)
+      - [Configure a Webcam](#configure-a-webcam)
       - [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
       - [Print a Klipper Benchy](#print-a-klipper-benchy)
 
@@ -34,7 +34,7 @@ With this guide, you'll be able to retain the use of the touch screen housing, b
 
 Before you flash anything to your printer or take anything apart, you need to use it to print a few parts.
 
-#### Parts to Print:
+#### Parts to Print
 
 - Raspberry Pi & Buck Converter Mount: [here](https://www.thingiverse.com/thing:6273981)
   - Since Klipper runs on a Raspberry Pi which you will power via the printer's power supply, you need a place to install the new componenets. I chose the electronics compartment below the printer. This model does not shield the buck converter, so take care when handling it as there is a risk of being shocked.
@@ -48,7 +48,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 - Optional: 3x M3 T-Nuts: [here](https://www.thingiverse.com/thing:3050607)
   - These are only needed if you wish to save a little bit of money and avoid purchasing them. But you need a way to mount the Raspberry Pi/Buck Converter part on the rails in your electronics compartment.
 
-#### Parts to Purchase:
+#### Parts to Purchase
 
 - Wifi Capable Raspberry Pi: [here](https://www.amazon.com/dp/B0CPWH8FL9)
   - I bought the 5, you can probably get away with something cheaper if you wish.
@@ -190,7 +190,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 ### Optional Steps
 
-#### Configure a Webcam:
+#### Configure a Webcam
 
 1. If you’re using a webcam, and my Logitech C920 profile didn’t work for you, you can find the `device` path by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions so I chose 720p@30fps which really only operates at about 10fps. You’ll have to play around to see what works best. After you’ve configured the webcam profile, go into Mainsail/Fluidd’s settings and add a webcam. Here are my settings: 
    <img src="https://i.imgur.com/6QNwTIN.png" alt="https://i.imgur.com/6QNwTIN.png" style="zoom:25%;" />
