@@ -80,9 +80,10 @@ Before you flash anything to your printer or take anything apart, you need to us
 - 20-22 Dupont Wires: [here](https://www.amazon.com/IWISS-1550PCS-Connector-Headers-Balancer/dp/B08X6C7PZM/)
   - Used for connecting the Buck Converter to the Raspberry Pi. 
 
-- Optional: USB Wireless Adapater: [here](https://www.amazon.com/dp/B0B94R78N7?psc=1&smid=ATVPDKIKX0DER)
+- Optional: USB Wireless Adapater: [here](https://www.amazon.com/dp/B07V4R3QHW)
   - Since the Rasberry Pi will be housed inside the electronics compartment, it will have poor wireless reception. You can optionally connect a USB wireless adapter to it to improve the signal by mounting it ouside of the printer.
-
+  - Be sure to research the Linux driver support of the adapter you purchase. I first selected a [NETGEAR Nighthawk (A8000) - AXE3000](https://www.amazon.com/gp/product/B0B94R78N7) adapter because it seemed like the best on the market. However, I encountered some annoying issue with the `mt7921u` driver as documented: [here](https://github.com/mainsail-crew/crowsnest/issues/276).
+  
 - *Optional:* Noctua NF-A4x10 Fan: [here](https://www.amazon.com/dp/B07DXS86G7)
   - You can optionally install a Noctua fan alongside the Raspberry Pi and Buck Converter on the gantry rails to keep things cool.
 
@@ -121,9 +122,24 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 6. Copy the contents of [printer-creality-ender6-2020.cfg](https://github.com/Klipper3d/klipper/blob/master/config/printer-creality-ender6-2020.cfg) to `~/printer_data/config/printer.cfg`. If you have a BLTouch installed make sure you edit the file according to the comments in the `stepper_z`, `safe_z_home`, `bltouch`, and `bed_mesh` sections. 
 
-7. If you have a webcam, modify `printer_data/config/crowsnest.cfg` accordingly. I have a Logitech C920 and the best configuration I could come up with looks like this: 
+7. If you have a webcam, modify `printer_data/config/crowsnest.cfg` accordingly. I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it lacks the required hardware encoders. On my wireless network, this yields a feed at around 15fps.
 
-   <img src="https://i.imgur.com/n27ahDh.png" alt="https://i.imgur.com/n27ahDh.png" style="zoom:25%;" align="left"/>
+   ```bash
+   [crowsnest]
+   log_path: ~/klipper_logs/crowsnest.log
+   log_level: verbose
+   delete_log: false
+   no_proxy: false
+   
+   [cam 1]
+   mode: ustreamer
+   port: 8080
+   device: /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_809E7D1F-video-index0
+   resolution: 800x600
+   max_fps: 30
+   v4l2ctl: focus_automatic_continuous=0,focus_absolute=70,brightness=100,contrast=100,saturation=100,sharpness=200,backlight_compensation=1
+   custom_flags: --format=yuyv
+   ```
 
 <hr>
 
@@ -212,17 +228,19 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 #### Configure a Webcam
 
-1. If you’re using a webcam, and my Logitech C920 profile didn’t work for you, you can find the `device` path by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions so I chose 720p@30fps which really only operates at about 10fps. You’ll have to play around to see what works best. After you’ve configured the webcam profile, go into Mainsail/Fluidd’s settings and add a webcam. Here are my settings: 
+1. If you’re using a webcam, and my Logitech C920 profile didn’t work for you, you can find the `device` path by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions. You’ll have to play around to see what works best. After you’ve configured the webcam profile, go into Mainsail/Fluidd’s settings and add a webcam. Here are my settings: 
    <img src="https://i.imgur.com/6QNwTIN.png" alt="https://i.imgur.com/6QNwTIN.png" style="zoom:25%;" />
 
 #### Configure a USB Wireless Adapter
 
-I noticed that Linux was randomly choosing between `wlan0` and `wlan1` on boot after I installed my USB Wireless Adapter. To force it to use `wlan1`, the USB WIreless Adapter, you can simply add `interface-name=wlan1` to the `[connection]` section in the `/etc/NetworkManager/system-connections/preconfigured.nmconnection` file that Raspberry Pi OS automatically created for you and then restart NetworkManager or reboot the Pi.
+I noticed that Linux was randomly choosing between `wlan0` and `wlan1` on boot after I installed my USB Wireless Adapter. To force it to use `wlan1`, the USB WIreless Adapter, you can simply add `interface-name=wlan1` to the `[connection]` section in the `/etc/NetworkManager/system-connections/preconfigured.nmconnection` file that Raspberry Pi OS automatically created for you.
+
 ```bash
-systemctl restart NetworkManager
+[connection]
+interface-name=wlan1
 ```
 
-Disabling Power Management can also allegedly help improve performance. This is accomplished by adding `wifi.powersave = 2` to the `[connection]` block as well. However, I noticed that when I added this to the `preconfigured.nmconnection` file `iw wlan1 get power_save` showed that it was still on. So instead I created a new `/etc/NetworkManager/conf.d/wifi-powersave.conf` that simply contained the following, and then restarted NetworkManager again.
+Disabling Power Management can also allegedly help improve performance. This is accomplished by adding `wifi.powersave = 2` to the `[connection]` block as well. However, I noticed that when I added this to the `preconfigured.nmconnection` file, `iw wlan1 get power_save` showed that it was still on. So instead I created a new `/etc/NetworkManager/conf.d/wifi-powersave.conf` that simply contained the following.
 ```bash
 [connection]
 wifi.powersave = 2
