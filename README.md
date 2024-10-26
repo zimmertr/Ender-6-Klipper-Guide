@@ -201,6 +201,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 :warning: TODO: Finish
 
 <hr>
+
 ## Optional Steps
 
 ### Configure a Webcam
