@@ -244,7 +244,10 @@ I noticed that Linux was randomly choosing between `wlan0` and `wlan1` on boot a
 interface-name=wlan1
 ```
 
-Disabling Power Management can also allegedly help improve performance. Or at least prevent the NIC from disconnecting after some time idling. This is accomplished by adding `wifi.powersave = 2` to the `[connection]` block. However, I noticed that when I added this to the `preconfigured.nmconnection` file, `iw wlan1 get power_save` showed that it was still on. So instead I created a new `/etc/NetworkManager/conf.d/wifi-powersave.conf` that simply contained the following.
+Disabling power management can also allegedly help improve performance. Or at least prevent the NIC from disconnecting after some time idling. Alternatively, you might be able to use something like [Sonar](https://github.com/mainsail-crew/sonar) to accomplish the same thing.
+
+Disabling power management can be accomplished by adding `wifi.powersave = 2` to the `[connection]` block. However, I noticed that when I added this to the `preconfigured.nmconnection` file, `iw wlan1 get power_save` showed that it was still on. So instead I created a new `/etc/NetworkManager/conf.d/wifi-powersave.conf` that simply contained the following.
+
 ```bash
 [connection]
 wifi.powersave = 2
