@@ -122,25 +122,6 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 6. Copy the contents of [printer-creality-ender6-2020.cfg](https://github.com/Klipper3d/klipper/blob/master/config/printer-creality-ender6-2020.cfg) to `~/printer_data/config/printer.cfg`. If you have a BLTouch installed make sure you edit the file according to the comments in the `stepper_z`, `safe_z_home`, `bltouch`, and `bed_mesh` sections. 
 
-7. If you have a webcam, modify `printer_data/config/crowsnest.cfg` accordingly. I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it lacks the required hardware encoders. On my wireless network, this yields a feed at around 15fps.
-
-   ```bash
-   [crowsnest]
-   log_path: ~/klipper_logs/crowsnest.log
-   log_level: verbose
-   delete_log: false
-   no_proxy: false
-   
-   [cam 1]
-   mode: ustreamer
-   port: 8080
-   device: /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_809E7D1F-video-index0
-   resolution: 800x600
-   max_fps: 30
-   v4l2ctl: focus_automatic_continuous=0,focus_absolute=70,brightness=100,contrast=100,saturation=100,sharpness=200,backlight_compensation=1
-   custom_flags: --format=yuyv
-   ```
-
 <hr>
 
 ### Step 4 - Installing the Replacement Touchscreen
@@ -228,7 +209,27 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 #### Configure a Webcam
 
-1. If you’re using a webcam, and my Logitech C920 profile didn’t work for you, you can find the `device` path by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions. You’ll have to play around to see what works best. After you’ve configured the webcam profile, go into Mainsail/Fluidd’s settings and add a webcam. Here are my settings: 
+1. If you’re using a webcam, you can find the `device` path by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions. You’ll have to play around to see what works best. 
+   
+1. I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it lacks the required hardware encoders. On my wireless network, this yields a feed at around 15fps.
+   ```bash
+   [crowsnest]
+   log_path: ~/klipper_logs/crowsnest.log
+   log_level: verbose
+   delete_log: false
+   no_proxy: false
+   
+   [cam 1]
+   mode: ustreamer
+   port: 8080
+   device: /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_809E7D1F-video-index0
+   resolution: 800x600
+   max_fps: 30
+   v4l2ctl: focus_automatic_continuous=0,focus_absolute=70,brightness=100,contrast=100,saturation=100,sharpness=200,backlight_compensation=1
+   custom_flags: --format=yuyv
+   ```
+   
+1. After you’ve configured the webcam profile, go into Mainsail/Fluidd’s settings and add a webcam. Here are my settings: 
    <img src="https://i.imgur.com/6QNwTIN.png" alt="https://i.imgur.com/6QNwTIN.png" style="zoom:25%;" />
 
 #### Configure a USB Wireless Adapter
