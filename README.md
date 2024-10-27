@@ -55,29 +55,43 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 - **Raspberry Pi**: [here](https://www.amazon.com/dp/B0CPWH8FL9)
   - I bought the 5, you can probably get away with something cheaper if you wish. In hindsight the 4 might actually be a better choice if you plan to use a webcam as it supports hardware encoding.
+
 - **MicroSD Card**
+
 - **BIGTREETECH PI TFT43 Screen**: [here](https://www.amazon.com/dp/B09791ZG1B)
+
 - **Buck Converter**: [here](https://www.amazon.com/dp/B07WQJ2GD6)
+
 - **50CM 22Pin -> 15Pin DSI Cable**: [here](https://www.amazon.com/dp/B0CXPJ7F6H)
   - I found that anything shorter will not reach adequately from the touch screen housing into the electronics compartment. Additionally, the Raspberry Pi 5 uses a different DSI pinout than the `PI TFT43` touchscreen. So while it does come with a DSI cable, it is both too short and uses the incorrect pinout.
+
 - **MicroUSB Cable**
   - This is needed to connect the Raspberry Pi to the microcontroller. Mine is 24” long, but 12” would probably be sufficient.
+
 - **USB-C Cable**
   - This is only needed temporarily to power the Raspberry Pi for testing and configuration before you connect it to your power supply. I powered mine with my Macbook Pro charger.
+
 - **M2.5 & M3 Screws & Nuts**
   - The Raspberry Pi holes are M2.5 and the buck converter holes are M3. I used M2.5x10mm for the Raspberry Pi and M3x10 for the buck converter which allowed me to thread nuts on the other side of the adapter. I'm not sure if the print lacks proper threading or my print quality just wasn't good enough to do without. You would also need four M3 screws to attach a Noctua NF-A4x10 fan to the gantry rail part I designed should you choose to print it.
+
 - **14-16AWG Wiring**: [here](https://www.amazon.com/gp/product/B0B9J91SJ8)
   - Used for wiring the buck converter with the Ender 6's power supply. The stock power supply outputs 24V at 15A. Consult [this](https://en.wikipedia.org/wiki/American_wire_gauge#Tables_of_AWG_wire_sizes) table to determine the proper rating for your power supply.
+
 - **14-16AWG Spade Terminals**: [here](https://www.amazon.com/gp/product/B000BW0YUS)
   - Used for connecting the wiring to the Ender 6's Power Supply
+
 - **20-22AWG Dupont Wires**: [here](https://www.amazon.com/IWISS-1550PCS-Connector-Headers-Balancer/dp/B08X6C7PZM/)
   - Used for connecting the buck converter to the Raspberry Pi.
+
 - ***Optional* - USB Wireless Adapter**: [here](https://www.amazon.com/dp/B07V4R3QHW)
   - Since the Rasberry Pi will be housed inside the electronics compartment, it will have poor wireless reception. You can optionally connect a USB wireless adapter to it to improve the signal by mounting it ouside of the printer. If you include this, be sure you read the optional [Configure the Input Current](#configure-the-input-current) section.
+
 - ***Optional* - Noctua NF-A4x10 Fan**: [here](https://www.amazon.com/dp/B07DXS86G7)
   - You can optionally install a Noctua fan alongside the Raspberry Pi and buck converter on the gantry rails to help keep things cool.
+
 - ***Optional* - M3 T Nuts**
   - Used to mount the Raspberry Pi/buck converter part on the gantry rails in the electronics compartment. You could print these instead.
+
 - ***Optional* - USB Power Blocker**: [here](https://www.amazon.com/PortaPow-Cased-Power-Blocker-Single/dp/B094FYL9QT)
   - When you power the printer and the Raspberry Pi separately (Like via a USB-C cable for testing), the microcontroller will also receive power from the Raspberry Pi through the USB cable. Using a power blocker on the Raspberry Pi can help prevent damage to your printer's microcontroller. It's also possible to [use tape](https://community.octoprint.org/t/put-tape-on-the-5v-pin-why-and-how/13574) or [print a part](https://www.thingiverse.com/thing:3044586) to accomplish this instead.
 
@@ -89,6 +103,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 ### Step 1 - Flashing the Printer’s Microcontroller
 
 1. Clone the [Klipper repo](https://github.com/Klipper3d/klipper) and change into the directory.
+
    ```bash
    git clone https://github.com/Klipper3d/klipper
    cd klipper
@@ -96,7 +111,9 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 2. Run `make menuconfig` and provide the following configuration:
    <img src="https://i.imgur.com/jxorWUx.png" alt="https://i.imgur.com/jxorWUx.png" style="zoom:25%;" />
+
 3. Save the configuration and run `make` to build the binary. 
+
 4. Copy `./out/klipper.bin` to an SD Card, insert it into your Ender 6, and power on the printer. When the device detects the binary file it will automatically flash it to the motherboard. The screen will not indicate that this is happening, however, and it will appear frozen. Wait a minute or two for it to finish and then power the printer back off. At this point in time, your printer will no longer function until you finish setting up Klipper or flash an [original firmware](https://www.creality.com/pages/download-ender-6) back onto it. 
 
 <hr>
@@ -192,6 +209,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 6. If your range exceeds 0.2mm, review the visualization of the mesh and adjust your bed accordingly. You can control the X/Y/Z position of the hotend using Klipper and perform the paper test at different locations to assist in leveling the bed. 
 
 7. Once you’ve finished leveling the bed, perform steps 4 and 5 again. Repeat 4-6 over and over until your bed mesh is satisfactory. Once it is, save the mesh and add this to your `printer.cfg` to load it automatically:
+
    ```bash
    [delayed_gcode my_delayed_gcode]
    initial_duration: 1.0
@@ -206,6 +224,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 :warning: TODO: Finish
 
 <hr>
+
 ## Optional Steps
 
 The following steps are are optional, but I found much of the nuance in installing Klipper was spent figuring this stuff out so I wanted to include it in the guide as well.
@@ -217,6 +236,7 @@ The following steps are are optional, but I found much of the nuance in installi
 The `device` path can be found by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions; especially on a wireless network. You’ll have to play around to see what works best. 
 
 I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). On my wireless network, this configuration yields a feed at around 15fps. You'll probably want to adjust the `v4l2ctl` arguments according to the placement of your camera and the lighting in the room.
+
 ```bash
 [crowsnest]
 log_path: ~/klipper_logs/crowsnest.log
@@ -235,6 +255,7 @@ custom_flags: --format=yuyv
 ```
 
 Afterwards, you'll need to reboot or restart Crowsnest.
+
 ```bash
 systemctl restart crowsnest
 ```
