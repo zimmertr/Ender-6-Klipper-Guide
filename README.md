@@ -1,4 +1,4 @@
-# Installing Klipper on a Creality Ender 6
+# Installing Klipper on a Creality Ender-6
 
 ## Table of Contents
 
@@ -16,13 +16,17 @@
 * [Optional Steps](#optional-steps)
   - [Configure a Webcam](#configure-a-webcam)
   - [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
+  - [Configure the Input Current](#configure-the-input-current)
+  - [Fine Tune the Input Voltage](#fine-tune-the-input-voltage)
   - [Print a Klipper Benchy](#print-a-klipper-benchy)
 
 <hr>
 
 ## Introduction
 
-[Klipper](https://www.klipper3d.org/) is a powerful open source firmware for 3D Printers than can improve the performance and print quality of your device by offloading its computational tasks to a more powerful computer. There are a few other guides out there for accomplishing this with an Ender 6, but at the time of writing this they were outdated, lacking in details, or both. So when I set out to install Klipper on my printer, I decided to write an updated (as of 2024) guide for the community.
+[Klipper](https://www.klipper3d.org/) is an open source firmware for 3D Printers than can improve the performance and print quality of your device by offloading its computational tasks to a more powerful computer. There are a few other guides out there for accomplishing this with an [Ender-6](https://www.creality.com/products/ender-6-3d-printer), but at the time of writing this they were outdated, lacking in details, or both. I was always intimidated to set up Klipper on my device as a result. So when I finally decided to go through with it I wanted to write an updated and detailed guide for the community. 
+
+Following this guide will result in a Klipper installation powered by a [Raspberry Pi 5](https://www.raspberrypi.com/products/raspberry-pi-5/) that has an upgraded touchscreen in the original housing and is accessible on a wireless network.
 
 :warning: TODO: Photo of printer with Benchy
 
@@ -35,10 +39,10 @@
 Before you flash anything to your printer or take anything apart, you need to use it to print a few things.
 
 - **Raspberry Pi & Buck Converter Mount:** [here](https://www.thingiverse.com/thing:6273981)
-  - Since Klipper runs on a Raspberry Pi which you will power via the printer's power supply, you need a place to install the new components. I chose the electronics compartment below the printer. This model does not shield the buck converter, so take care when handling it as there is a risk of being shocked. Buck Converts come in different shapes and sizes, so make sure you compare the dimensions of this part to the one you choose to purchase.
+  - Since Klipper runs on a Raspberry Pi which you will power via the printer's power supply, you need a place to install the new components. I chose the electronics compartment below the printer. This model does not shield the buck converter, so take care when handling it as there is a risk of being shocked. Buck converters come in different shapes and sizes, so make sure you compare the dimensions of this part to the one you choose to purchase.
 
 - **PIT TFT43 Screen Adapter**: [here](https://www.thingiverse.com/thing:5246155)
-  - KlipperScreen does not work with the default touchscreen for the Ender 6. There is a fork floating around that adds support, but it is unmaintained and the code was never merged upstream. In order to preserve the functionality of the touchscreen, you must replace it with one that is compatible. I chose the `PI TFT43` because it fits well in the housing. However, you will need to print an adapter to mount it correctly.
+  - KlipperScreen does not work with the default touchscreen for the Ender 6. There is a fork floating around that adds support, but it is unmaintained and the code was never merged upstream. In order to preserve the functionality of a touchscreen, you must replace it with one that is compatible. I chose the `PI TFT43` because it fits well in the housing. However, you will need to print an adapter to mount it correctly.
 
 - ***Optional* - Gantry Fan Mount**: [here](https://www.thingiverse.com/thing:6784980)
   - Should you wish you provide cooling to the Raspberry Pi and buck converter, you can print this model I designed that allows you to mount a Noctua NF-A4x10 fan on the gantry rails.
@@ -67,8 +71,8 @@ Before you flash anything to your printer or take anything apart, you need to us
   - Used for connecting the wiring to the Ender 6's Power Supply
 - **20-22AWG Dupont Wires**: [here](https://www.amazon.com/IWISS-1550PCS-Connector-Headers-Balancer/dp/B08X6C7PZM/)
   - Used for connecting the buck converter to the Raspberry Pi.
-- ***Optional* - USB Wireless Adapater**: [here](https://www.amazon.com/dp/B07V4R3QHW)
-  - Since the Rasberry Pi will be housed inside the electronics compartment, it will have poor wireless reception. You can optionally connect a USB wireless adapter to it to improve the signal by mounting it ouside of the printer. Be sure to research the Linux driver support of the adapter you purchase. I first purchased a [NETGEAR Nighthawk (A8000) - AXE3000](https://www.amazon.com/gp/product/B0B94R78N7) adapter because it seemed like the best on the market. However, I encountered some annoying issues with the `mt7921u` driver as documented [here](https://github.com/mainsail-crew/crowsnest/issues/276) so I had to purchase another one.
+- ***Optional* - USB Wireless Adapter**: [here](https://www.amazon.com/dp/B07V4R3QHW)
+  - Since the Rasberry Pi will be housed inside the electronics compartment, it will have poor wireless reception. You can optionally connect a USB wireless adapter to it to improve the signal by mounting it ouside of the printer. If you include this, be sure you read the optional [Configure the Input Current](#configure-the-input-current) section.
 - ***Optional* - Noctua NF-A4x10 Fan**: [here](https://www.amazon.com/dp/B07DXS86G7)
   - You can optionally install a Noctua fan alongside the Raspberry Pi and buck converter on the gantry rails to help keep things cool.
 - ***Optional* - M3 T Nuts**
@@ -92,7 +96,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 2. Run `make menuconfig` and provide the following configuration:
    <img src="https://i.imgur.com/jxorWUx.png" alt="https://i.imgur.com/jxorWUx.png" style="zoom:25%;" />
 3. Save the configuration and run `make` to build the binary. 
-4. Copy `./out/klipper.bin` to an SD Card, insert it into your Ender 6, and power on the printer. When the device detects the binary file it will automatically flash it to the motherboard. The screen will not indicate that this is happening, however, and it will appear frozen. Wait a minute or two for it to finish and then power the printer back off. At this point in time, your printer will no longer function until you finish this guide or flash an [original firmware](https://www.creality.com/pages/download-ender-6) back onto it. 
+4. Copy `./out/klipper.bin` to an SD Card, insert it into your Ender 6, and power on the printer. When the device detects the binary file it will automatically flash it to the motherboard. The screen will not indicate that this is happening, however, and it will appear frozen. Wait a minute or two for it to finish and then power the printer back off. At this point in time, your printer will no longer function until you finish setting up Klipper or flash an [original firmware](https://www.creality.com/pages/download-ender-6) back onto it. 
 
 <hr>
 
@@ -114,17 +118,17 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 ### Step 3 - Installing the Replacement Touchscreen
 
-1. Unplug the printer, and wait for the power supply capacitors to discharge. Flip it on it’s side and remove the bottom cover to access the electronics compartment. Finally, unscrew the touch screen housing and remove it from the printer. There are four T15 screws located near the microcontroller and two T8 screws each on the bottom and back of the housing. Remove the original screen from the housing, but keep the rubber gasket in place. 
+1. Unplug the printer, flip it on it’s side and remove the bottom cover to access the electronics compartment. Finally, unscrew the touch screen housing and remove it from the printer. There are four T15 screws located near the microcontroller and two T8 screws each on the bottom and back of the housing. Remove the original screen from the housing, but keep the rubber gasket in place. 
 
 2. Connect the DSI cable to one of the Raspberry Pi's `CAM/DISP` headers and the header on the `PI TFT43` screen. The orientation of the cable matters as there are only pins on one side of the ribbon. On the Raspberry Pi, the Raspberry Pins should face towards the USB ports. On the `PI TFT43`, the Raspberry Pins should face away from the screen. 
 
    <img src="https://i.imgur.com/UHSxvHq.png" alt="https://i.imgur.com/UHSxvHq.png" style="zoom:25%;" align="left"/>
 
-3. Power on the Raspberry Pi with a USB-C cable and test that the screen works. After a moment, you should see Debian boot and Klipper Screen should load. Adjust the brightness wheel on the `PI TFT43` until you are satisfied and power off the Raspberry Pi with the power button. The brightness wheel will no longer be accessible once it is installed inside the housing.
+3. Power on the Raspberry Pi with a USB-C cable and test that the screen works. After a moment, you should see Debian boot and Klipper Screen should load. Adjust the brightness wheel on the `PI TFT43` until you are satisfied and power off the Raspberry Pi with the power button. The brightness wheel will no longer be accessible once it is installed inside the housing, so make sure you dial this in first.
 
    <img src="https://i.imgur.com/9wJBWLI.jpeg" alt="https://i.imgur.com/9wJBWLI.jpeg" style="zoom:25%;" align="left"/>
 
-4. Mount the screen onto the printed adapter, being extra careful not to overtighten the screws as doing so could break the screen. Power on the Raspberry Pi once more to confirm there is no backlight bleed from the screws being too tight. Afterwards, mount the `PI TFT43` into the screen housing being sure it is oriented correctly. (The brightness scroll wheel should face the top of the housing and be near the SD Card slot) I don’t believe it’s possible to continue using the SD Card reader located inside the touchscreen housing. Some Googling told me the connector is referred to as a [8 wire Molex PicoBlade](https://www.molex.com/en-us/products/connectors/wire-to-board-connectors/picoblade-connectors) but I was unable to find a cable to connect this to the Raspberry Pi. However, if you did manage to puzzle this out, you would probably be able to make it work if you configure Debian to mount the SD Card at your Klipper Virtual SD card path. I left the speaker inside the electronics compartment disconnected for the same reason. You could probably replace this speaker with a USB device if you so desired.
+4. Mount the screen onto the printed adapter, being extra careful not to overtighten the screws as doing so could break the screen. Power on the Raspberry Pi once more to confirm there is no backlight bleed from overtightened screws. Afterwards, mount the `PI TFT43` into the screen housing being sure it is oriented correctly. The brightness scroll wheel should face the top of the housing and be near the SD Card slot. I don’t believe it’s possible to continue using the SD Card reader located inside the touchscreen housing. Some Googling told me the connector is referred to as a [8 wire Molex PicoBlade](https://www.molex.com/en-us/products/connectors/wire-to-board-connectors/picoblade-connectors) but I was unable to find a cable to connect this to the Raspberry Pi. However, if you did manage to puzzle this out, you would probably be able to make it work if you configure Debian to mount the SD Card at your Klipper Virtual SD card path. I left the speaker inside the electronics compartment disconnected for the same reason. You could probably replace this speaker with a USB device if you so desired.
 
    <img src="https://i.imgur.com/BOZJG0B.png" alt="https://i.imgur.com/BOZJG0B.png" style="zoom:25%;" align="left"/>
 
@@ -134,11 +138,11 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 ### Step 4 - Installing the Raspberry Pi and Buck Converter
 
-1. Connect the Raspberry Pi to the microcontroller using the MicroUSB cable and, optionally, any other peripherals like a webcam and USB wireless adapter. Make sure you use the blue USB 3.0 ports, if they’re available. If you're using a power blocker, go ahead and power on the Ender 6 and Raspberry Pi. At this point, if you've done everything correctly, Klipper should automatically detect your printer and KlipperScreen should appear on the screen.
+1. Connect the Raspberry Pi to the microcontroller using the MicroUSB cable and, optionally, any other peripherals like a webcam and USB wireless adapter. Make sure you use the blue USB 3.0 ports for any high-bandwidth devices, if they’re available. If you're using a power blocker, go ahead and power on the Ender 6 and Raspberry Pi. At this point, if you've done everything correctly, Klipper should automatically detect your printer and KlipperScreen should appear on the screen.
 
 2. Power everything back off and disconnect the Raspberry Pi and microcontroller. 
 
-3. Cut the 14-16AWG wires to length and strip both sides and attach the spade terminals to one end. Attach the terminals to an open positive and negative rail on the power supply. Attach the other end of the wires to the input side of the buck converter.
+3. Cut the 14-16AWG wires to length, strip both sides, and attach the spade terminals to one end. Attach the terminals to an open positive and negative rail on the power supply. Attach the other end of the wires to the input side of the buck converter.
 
    <img src="https://i.imgur.com/BD5eLfS.jpeg" alt="https://i.imgur.com/BD5eLfS.jpeg" style="zoom:25%;" align="left"/>
 
@@ -176,9 +180,9 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 1. If everything is installed correctly, when you power on the printer the Raspberry Pi and the TFT43 screen should turn on and Klipper should load.
 
-2. Connect to Mainsail/Fludd and warm the bed and hotend to the temperature you most usually print at. I use PETG so I used 235/90. 
+2. Connect to Mainsail/Fludd/KlipperScreen and warm the bed and hotend to the temperature you most usually print at. I use PETG so I used 235/90. 
 
-3. Once the hotend is at temperature, `retract` any filament from the nozzle so that it doesn’t ooze while you level the bed and calculate a bed mesh. 
+3. Once the hotend is at temperature, retract any filament from the nozzle so that it doesn’t ooze while you level the bed and calculate a bed mesh. 
 
 4. If you use a BLTouch, you first need to calculate your [Z Offset](https://www.klipper3d.org/Probe_Calibrate.html#calibrating-probe-z-offset). Using Klipper’s web console, issue the `PROBE_CALIBRATE` command. Using a [piece of paper](https://www.klipper3d.org/Bed_Level.html#the-paper-test), adjust the offset as you normally would. When you are satisfied with the results, run `SAVE_CONFIG`. Klipper will write the `z_offset` to your `printer.cfg` file for you and restart itself to load the configuration. 
 
@@ -201,14 +205,17 @@ Before you flash anything to your printer or take anything apart, you need to us
 :warning: TODO: Finish
 
 <hr>
-
 ## Optional Steps
+
+The following steps are are optional, but I found much of the nuance in installing Klipper was spent figuring this stuff out so I wanted to include it in the guide as well.
 
 ### Configure a Webcam
 
-If you’re using a webcam, you can find the `device` path by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions. You’ll have to play around to see what works best. 
+[Crowsnest](https://github.com/mainsail-crew/crowsnest) can be used to set up a webcam by defining a `~/printer_data/config/crowsnest.conf` file. But first you'll need to identify some information about your device. 
 
-I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). On my wireless network, this yields a feed at around 15fps.
+The `device` path can be found by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions; especially on a wireless network. You’ll have to play around to see what works best. 
+
+I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). On my wireless network, this configuration yields a feed at around 15fps. You'll probably want to adjust the `v4l2ctl` arguments according to the placement of your camera and the lighting in the room.
 ```bash
 [crowsnest]
 log_path: ~/klipper_logs/crowsnest.log
@@ -238,16 +245,16 @@ After you’ve configured the webcam profile, go into Mainsail/Fluidd’s settin
 
 ### Configure a USB Wireless Adapter
 
-I noticed that Linux was randomly choosing between `wlan0` and `wlan1` on boot after I installed my USB wireless adapter. `wlan0` is the Raspberry Pi's internal wireless chip so that wasn't ideal. To force it to use `wlan1`, the USB wireless adapter, you can simply add `interface-name=wlan1` to the `[connection]` section in the `/etc/NetworkManager/system-connections/preconfigured.nmconnection` file that Raspberry Pi OS automatically created for you.
+I noticed that Linux was randomly choosing between `wlan0` and `wlan1` on boot after I installed my USB wireless adapter. `wlan0` is the Raspberry Pi's internal wireless chip so that wasn't ideal. To force it to use `wlan1`, the USB wireless adapter, you can add `interface-name=wlan1` to the `[connection]` section in the `/etc/NetworkManager/system-connections/preconfigured.nmconnection` file that Raspberry Pi OS automatically created for you.
 
 ```bash
 [connection]
 interface-name=wlan1
 ```
 
-Disabling power management can also allegedly help improve performance. Or at least prevent the NIC from disconnecting after some time idling. Alternatively, you might be able to use something like [Sonar](https://github.com/mainsail-crew/sonar) to accomplish the same thing.
+Disabling [power management](https://ubuntu.com/core/docs/networkmanager/snap-configuration/wifi-powersave) can also allegedly help improve performance. Or at least prevent the NIC from disconnecting after some time idling. Alternatively, you might be able to use something like [Sonar](https://github.com/mainsail-crew/sonar) to accomplish the same thing.
 
-Disabling power management can be accomplished by adding `wifi.powersave = 2` to the `[connection]` block. However, I noticed that when I added this to the `preconfigured.nmconnection` file, `iw wlan1 get power_save` showed that it was still on. So instead I created a new `/etc/NetworkManager/conf.d/wifi-powersave.conf` that simply contained the following.
+Disabling power management can be accomplished by adding `wifi.powersave = 2` to the `[connection]` block. However, I noticed that when I added this to the `preconfigured.nmconnection` file, `iw wlan1 get power_save` showed that it was still on. So instead I created a new `/etc/NetworkManager/conf.d/wifi-powersave.conf` that contained the following.
 
 ```bash
 [connection]
@@ -258,6 +265,41 @@ Afterwards you'll need to either reboot or restart NetworkManager.
 
 ```bash
 systemctl restart NetworkManager
+```
+
+<hr>
+
+### Configure the Input Current
+
+The Raspberry Pi 5 is capable of providing [up to 1.6A](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#typical-power-requirements) to the connected USB devices. However, when the Raspberry Pi is powered on it [requests the input current](https://forums.raspberrypi.com/viewtopic.php?t=358576) from the USB-C port. Since the device is powered by the GPIO pins no response is received and the Raspberry Pi limits the current for the USB devices to 600mA. In my case, this resulted in the kernel frequently resetting my wireless USB adapter when it was under load because it would exceed this threshold.
+
+> [ 129.573465] usb usb1-port1: over-current change #1 
+> [ 129.708999] usb 1-1: USB disconnect, device number 2 
+> [ 131.309504] usb 4-1: reset SuperSpeed USB device number 10 using xhci-hcd
+
+This can be resolved by disabling the USB current limit with `raspi-config`, manually setting the input milliamps with `rpi-eeprom-config --edit`, and rebooting the device.
+
+```bash
+sudo raspi-config
+# 4 Performance Options
+# P4 USB Current 
+# Would you like the USB current limit to be disabled? -> Yes
+
+sudo rpi-eeprom-config --edit
+# Add: PSU_MAX_CURRENT=5000
+# Save and exit the file: Ctrl+X -> Return 
+
+sudo reboot
+```
+
+<hr>
+
+### Fine Tune the Input Voltage
+
+The wires connecting the Raspberry Pi to the buck converter have a small amount of resistance, so the Raspberry Pi will not receive the exact voltage shown on the buck converter. Technically the acceptable range is 5.0V ±5%, but if you'd like to get it closer to 5.0v this can be accomplished by running `vcgencmd pmic_read_adc EXT5V_V` on the Raspberry Pi to display the current input voltage in a `watch` loop and then adjusting the buck converter's output voltage until the Raspberry Pi is receiving closer to 5V. 
+
+```bash
+watch -n .1 vcgencmd pmic_read_adc EXT5V_V
 ```
 
 <hr>
