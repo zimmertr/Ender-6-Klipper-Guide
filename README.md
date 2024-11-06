@@ -4,8 +4,6 @@
 
 [Klipper](https://www.klipper3d.org/) is an open source firmware for 3D Printers than can improve the performance and print quality of your device by offloading its computational tasks to a more powerful computer. There are a few other guides out there for accomplishing this with an [Ender-6](https://www.creality.com/products/ender-6-3d-printer), but at the time of writing this they were outdated, lacking in details, or both. I was always intimidated to set up Klipper on my device as a result. So when I finally decided to go through with it I wanted to write an updated and detailed guide for the community. Additionally, I wanted to write it in markdown and put it on GitHub instead of a blog post so that other members of the community can amend it or add to it in the future.
 
-:warning: TODO: Photo of printer with Benchy
-
 <hr>
 
 ## Table of Contents
@@ -124,7 +122,11 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 3. Run `apt update` to update Debian’s package repositories and then install `git` and any other tools you like such as `vim`, `lm-sensors`, etc. 
 
-4. Install [Klipper](https://github.com/Klipper3d/klipper), [Moonraker](https://github.com/Arksine/moonraker), [Mainsail](https://github.com/mainsail-crew/mainsail), [Fluidd](https://github.com/fluidd-core/fluidd), [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen), [Crowsnest](https://github.com/mainsail-crew/crowsnest), [Mobileraker Companion](https://github.com/Clon1998/mobileraker_companion), any whatever other tools you require using whichever method you prefer. Normally I would do all of this with Docker but it seems like the current community method is with a shell based installer called [KIAUH](https://github.com/dw-0/kiauh). If you’ve done everything correctly, KIAUH will have littered your home directory with directories and everything should be automatically configured for you.
+4. Install [Klipper](https://github.com/Klipper3d/klipper), [Moonraker](https://github.com/Arksine/moonraker), [Mainsail](https://github.com/mainsail-crew/mainsail), [Fluidd](https://github.com/fluidd-core/fluidd), [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen), [Crowsnest](https://github.com/mainsail-crew/crowsnest), [Mobileraker Companion](https://github.com/Clon1998/mobileraker_companion), any whatever other tools you require using whichever method you prefer. The current popular method is with an interactive tool named [KIAUH](https://github.com/dw-0/kiauh). If you’ve done everything correctly, KIAUH will have littered your home directory with directories and everything should be automatically configured for you.
+   ```bash
+   git clone https://github.com/dw-0/kiauh.git
+   ./kiauh/kiauh.sh
+   ```
 
    <img src="https://i.imgur.com/VolMNzc.png" alt="https://i.imgur.com/VolMNzc.png" style="zoom: 25%;" align="left" />
 
@@ -200,19 +202,37 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 3. Once the hotend is at temperature, retract any filament from the nozzle so that it doesn’t ooze while you level the bed and calculate a bed mesh. 
 
-4. If you use a BLTouch, you first need to calculate your [Z Offset](https://www.klipper3d.org/Probe_Calibrate.html#calibrating-probe-z-offset). Using Klipper’s web console, issue the `PROBE_CALIBRATE` command. Using a [piece of paper](https://www.klipper3d.org/Bed_Level.html#the-paper-test), adjust the offset as you normally would. When you are satisfied with the results, run `SAVE_CONFIG`. Klipper will write the `z_offset` to your `printer.cfg` file for you and restart itself to load the configuration. 
+4. If you use a BLTouch, you first need to calculate your [z-offset](https://www.klipper3d.org/Probe_Calibrate.html#calibrating-probe-z-offset). Using Klipper’s web console, issue the `PROBE_CALIBRATE` command. Using a [piece of paper](https://www.klipper3d.org/Bed_Level.html#the-paper-test), adjust the offset as you normally would. When you are satisfied with the results, run `SAVE_CONFIG`. Klipper will write the `z_offset` to your `printer.cfg` file for you and restart itself to load the configuration. 
 
-5. Now that you have determined the Z offset, you need to calculate a bed mesh. Under Fluidd, this is in the `tune` section. Under Mainsail, this is under the `heatmap` section. First home the hotend on all three axes, then calibrate a bed mesh. I’m no expert, but from what I’ve read you want to shoot to have your mesh range be within at least 0.2mm. I personally shoot for 0.1mm, but it is difficult unless your bed plate is milled with high precision.
+5. Now that you have determined the z-offset, it's important to set the `position_min` in the `stepper_z` section to prevent the nozzle from colliding with the bed. To do this, you can perform `PROBE_CALIBRATE` again and find the lowest possible position where the paper can still move between the nozzle and the bed. This should be closer to the bed than the z-offset value you calculated so that you can perform adjustments later on, but not so close that a collision occurs. For example, my z-offset is 1.8 and the minimum value for my nozzle to avoid a collision is around 2.0. The `position_min` for the z-axis should then be the additive inverse of the difference between the two numbers since it is that amount _lower_ than the nozzle. In my case, `-1 * (2.0-1.8) = -0.2`.
 
-6. If your range exceeds 0.2mm, review the visualization of the mesh and adjust your bed accordingly. You can control the X/Y/Z position of the hotend using Klipper and perform the paper test at different locations to assist in leveling the bed. 
+   ```bash
+   [stepper_z]
+   position_min: -0.2
+   ```
 
-7. Once you’ve finished leveling the bed, perform steps 4 and 5 again. Repeat 4-6 over and over until your bed mesh is satisfactory. Once it is, save the mesh and add this to your `printer.cfg` to load it automatically:
+6. Restart Klipper so the changes take effect. Then home the nozzle and perform `PROBE_CALIBRATE` to test that your `position_min` is functioning correctly. If it is, when you attempt to lower the nozzle beneath `position_min`, Klipper should throw an error instead of colliding the nozzle with the bed. 
+   ```bash
+   sudo systemctl restart klipper
+   ```
+
+7. After calculating your z-offset, you should calculate a bed mesh. Under Fluidd, this is in the `Tune` section. Under Mainsail, this is under the `Heightmap` section. First home the hotend on all three axes, then calibrate a bed mesh. I’m no expert, but from what I’ve read you want to shoot to have your mesh range be within at least 0.2mm. I personally shoot for 0.1mm, but it is difficult unless your bed plate is milled with high precision.
+
+8. If your range exceeds 0.2mm, review the visualization of the mesh and adjust your bed accordingly. You can control the X/Y/Z position of the hotend using Klipper and perform the paper test at different locations to assist in leveling the bed. 
+
+9. Once you’ve finished leveling the bed, perform steps 4 and 5 again. Repeat 4-6 over and over until your bed mesh is satisfactory. Once it is, save the mesh and add this to your `printer.cfg` to load it automatically:
 
    ```bash
    [delayed_gcode my_delayed_gcode]
    initial_duration: 1.0
    gcode:
        BED_MESH_PROFILE LOAD="default"
+   ```
+
+10. Restart Klipper once more so the mesh changes take effect.
+
+   ```bash
+   sudo systemctl restart klipper
    ```
 
 <hr>
@@ -231,9 +251,9 @@ The following steps are are optional, but I found much of the nuance in installi
 
 [Crowsnest](https://github.com/mainsail-crew/crowsnest) can be used to set up a webcam by defining a `~/printer_data/config/crowsnest.conf` file. But first you'll need to identify some information about your device. 
 
-The `device` path can be found by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l-ctl -d $DEVICE –list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions; especially on a wireless network. You’ll have to play around to see what works best. 
+The `device` path can be found by running `ls` against `/dev/v4l/by-id/`. Afterwards, you can use `v4l2-ctl -d $DEVICE --list-formats-ext` to determine the `resolution` and `max_fps`. You might be tempted to choose the highest available resolution and fps, but I have found that there are some bandwidth/latency issues at higher resolutions; especially on a wireless network. You’ll have to play around to see what works best. 
 
-I have a Logitech C920 and the best configuration I could come up with looks like this. I've read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). On my wireless network, this configuration yields a feed at around 15fps. You'll probably want to adjust the `v4l2ctl` arguments according to the placement of your camera and the lighting in the room.
+For my Logitech C920 and C270 webcams, the best configurations I could come up with looks like this. On my wireless network, each camera yields a feed of around 15fps with the following configuration. The `C920` works at a lower resolution but performs better in low-light conditions while the `C270` works at a higher resolution and performs worse in low-light conditions. 
 
 ```bash
 [crowsnest]
@@ -242,7 +262,7 @@ log_level: verbose
 delete_log: false
 no_proxy: false
 
-[cam 1]
+[cam c920]
 mode: ustreamer
 port: 8080
 device: /dev/v4l/by-id/usb-046d_HD_Pro_Webcam_C920_809E7D1F-video-index0
@@ -250,7 +270,17 @@ resolution: 800x600
 max_fps: 30
 v4l2ctl: focus_automatic_continuous=0,focus_absolute=70,brightness=100,contrast=100,saturation=100,sharpness=200,backlight_compensation=1
 custom_flags: --format=yuyv
+
+[cam c270]
+mode: ustreamer
+port: 8081
+device: /dev/v4l/by-id/usb-046d_0825_28E73D80-video-index0
+resolution: 1280x720
+max_fps: 30
+v4l2ctl: brightness=100,contrast=100,saturation=100,sharpness=200,backlight_compensation=1
 ```
+
+You'll probably want to adjust the `v4l2ctl` arguments according to the placement of your camera and the lighting in the room. ``v4l2-ctl -d $DEVICE -l` can be used to list the camera controls that are available for each device.  I've also read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). 
 
 Afterwards, you'll need to reboot or restart Crowsnest.
 
@@ -321,9 +351,3 @@ The wires connecting the Raspberry Pi to the buck converter have a small amount 
 ```bash
 watch -n .1 vcgencmd pmic_read_adc EXT5V_V
 ```
-
-<hr>
-
-### Print a Klipper Benchy
-
-:warning: TODO
