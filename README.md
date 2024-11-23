@@ -1,5 +1,4 @@
 # Installing Klipper on a Creality Ender-6
-
 ## Introduction
 
 [Klipper](https://www.klipper3d.org/) is an open source firmware for 3D Printers than can improve the performance and print quality of your device by offloading its computational tasks to a more powerful computer. There are a few other guides out there for accomplishing this with an [Ender-6](https://www.creality.com/products/ender-6-3d-printer), but at the time of writing this they were outdated, lacking in details, or both. I was always intimidated to set up Klipper on my device as a result. So when I finally decided to go through with it I wanted to write an updated and detailed guide for the community. Additionally, I wanted to write it in markdown and put it on GitHub instead of a blog post so that other members of the community can amend it or add to it in the future.
@@ -26,7 +25,6 @@
   - [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
   - [Configure the Input Current](#configure-the-input-current)
   - [Fine Tune the Input Voltage](#fine-tune-the-input-voltage)
-  - [Print a Klipper Benchy](#print-a-klipper-benchy)
 
 <hr>
 
