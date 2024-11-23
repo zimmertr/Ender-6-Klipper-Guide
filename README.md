@@ -121,6 +121,10 @@ Before you flash anything to your printer or take anything apart, you need to us
 2. Insert the Micro SD Card into the Raspberry Pi and power it on with a USB-C cable. Wait a minute and SSH into the device. 
 
 3. Run `apt update` to update Debian’s package repositories and then install `git` and any other tools you like such as `vim`, `lm-sensors`, etc. 
+   ```bash
+   sudo apt update
+   sudo apt-get install git
+   ```
 
 4. Install [Klipper](https://github.com/Klipper3d/klipper), [Moonraker](https://github.com/Arksine/moonraker), [Mainsail](https://github.com/mainsail-crew/mainsail), [Fluidd](https://github.com/fluidd-core/fluidd), [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen), [Crowsnest](https://github.com/mainsail-crew/crowsnest), [Mobileraker Companion](https://github.com/Clon1998/mobileraker_companion), any whatever other tools you require using whichever method you prefer. The current popular method is with an interactive tool named [KIAUH](https://github.com/dw-0/kiauh). If you’ve done everything correctly, KIAUH will have littered your home directory with directories and everything should be automatically configured for you.
    ```bash
@@ -138,7 +142,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 1. Unplug the printer, flip it on it’s side and remove the bottom cover to access the electronics compartment. Finally, unscrew the touch screen housing and remove it from the printer. There are four T15 screws located near the microcontroller and two T8 screws each on the bottom and back of the housing. Remove the original screen from the housing, but keep the rubber gasket in place. 
 
-2. Connect the DSI cable to one of the Raspberry Pi's `CAM/DISP` headers and the header on the `PI TFT43` screen. The orientation of the cable matters as there are only pins on one side of the ribbon. On the Raspberry Pi, the Raspberry Pins should face towards the USB ports. On the `PI TFT43`, the Raspberry Pins should face away from the screen. 
+2. Connect the DSI cable to one of the Raspberry Pi's `CAM/DISP` headers and the header on the `PI TFT43` screen. The orientation of the cable matters as there are only pins on one side of the ribbon. On the Raspberry Pi, the pins should face towards the USB ports. On the `PI TFT43`, the pins should face away from the screen. 
 
    <img src="https://i.imgur.com/UHSxvHq.png" alt="https://i.imgur.com/UHSxvHq.png" style="zoom:25%;" align="left"/>
 
@@ -184,7 +188,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
    <img src="https://i.imgur.com/eXHYA8H.jpeg" alt="https://i.imgur.com/eXHYA8H.jpeg" style="zoom:25%;" align="left"/>
 
-9. Optional: Attach the Noctua fan to the T-Nuts and the USB Port of the Raspberry Pi and mount in next to the raspberry pi and buck converter adapter.
+9. ***Optional* - Attach the Noctua fan to the T-Nuts and the USB Port of the Raspberry Pi and mount in next to the raspberry pi and buck converter adapter.
 
    <img src="https://i.imgur.com/mvI22Qy.jpeg" alt="https://i.imgur.com/mvI22Qy.jpeg" style="zoom:25%;" align="left"/>
 
@@ -280,7 +284,7 @@ max_fps: 30
 v4l2ctl: brightness=100,contrast=100,saturation=100,sharpness=200,backlight_compensation=1
 ```
 
-You'll probably want to adjust the `v4l2ctl` arguments according to the placement of your camera and the lighting in the room. ``v4l2-ctl -d $DEVICE -l` can be used to list the camera controls that are available for each device.  I've also read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). 
+You'll probably want to adjust the `v4l2ctl` arguments according to the placement of your camera and the lighting in the room. `v4l2-ctl -d $DEVICE -l` can be used to list the camera controls that are available for each device.  I've also read that you could get better performance by using `WebRTC` and `camera-streamer`. But these are not supported on the Raspberry Pi 5 because it [lacks the required hardware encoders](https://github.com/dw-0/kiauh/issues/460#issuecomment-2080444855). 
 
 Afterwards, you'll need to reboot or restart Crowsnest.
 
@@ -323,9 +327,9 @@ systemctl restart NetworkManager
 
 The Raspberry Pi 5 is capable of providing [up to 1.6A](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#typical-power-requirements) to the connected USB devices. However, when the Raspberry Pi is powered on it [requests the input current](https://forums.raspberrypi.com/viewtopic.php?t=358576) from the USB-C port. Since the device is powered by the GPIO pins no response is received and the Raspberry Pi limits the current for the USB devices to 600mA. In my case, this resulted in the kernel frequently resetting my wireless USB adapter when it was under load because it would exceed this threshold.
 
-> [ 129.573465] usb usb1-port1: over-current change #1 
-> [ 129.708999] usb 1-1: USB disconnect, device number 2 
-> [ 131.309504] usb 4-1: reset SuperSpeed USB device number 10 using xhci-hcd
+> [ 129.573465] usb usb1-port1: over-current change #1  
+> [ 129.708999] usb 1-1: USB disconnect, device number 2  
+> [ 131.309504] usb 4-1: reset SuperSpeed USB device number 10 using xhci-hcd  
 
 This can be resolved by disabling the USB current limit with `raspi-config`, manually setting the input milliamps with `rpi-eeprom-config --edit`, and rebooting the device.
 
