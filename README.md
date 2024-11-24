@@ -167,7 +167,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 
    <img src="https://i.imgur.com/BD5eLfS.jpeg" alt="https://i.imgur.com/BD5eLfS.jpeg" style="zoom:25%;" align="left"/>
 
-4. Twist the voltage regular knob on the buck converter to step it down to 5v. 
+4. Twist the voltage regulator knob on the buck converter to step it down to 5v. 
 
    <img src="https://i.imgur.com/f4SneAm.jpeg" alt="https://i.imgur.com/f4SneAm.jpeg" style="zoom:25%;" align="left"/>
 
