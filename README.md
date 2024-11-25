@@ -125,7 +125,7 @@ Before you flash anything to your printer or take anything apart, you need to us
    sudo apt-get install git
    ```
 
-4. Install [Klipper](https://github.com/Klipper3d/klipper), [Moonraker](https://github.com/Arksine/moonraker), [Mainsail](https://github.com/mainsail-crew/mainsail), [Fluidd](https://github.com/fluidd-core/fluidd), [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen), [Crowsnest](https://github.com/mainsail-crew/crowsnest), [Mobileraker Companion](https://github.com/Clon1998/mobileraker_companion), any whatever other tools you require using whichever method you prefer. The current popular method is with an interactive tool named [KIAUH](https://github.com/dw-0/kiauh). If you’ve done everything correctly, KIAUH will have littered your home directory with directories and everything should be automatically configured for you.
+4. Install [Klipper](https://github.com/Klipper3d/klipper), [Moonraker](https://github.com/Arksine/moonraker), [Mainsail](https://github.com/mainsail-crew/mainsail), [Fluidd](https://github.com/fluidd-core/fluidd), [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen), [Crowsnest](https://github.com/mainsail-crew/crowsnest), [Mobileraker Companion](https://github.com/Clon1998/mobileraker_companion), and whatever other tools you require using whichever method you prefer. The current popular method is with an interactive tool named [KIAUH](https://github.com/dw-0/kiauh). If you’ve done everything correctly, KIAUH will have littered your home directory with directories and everything should be automatically configured for you.
    ```bash
    git clone https://github.com/dw-0/kiauh.git
    ./kiauh/kiauh.sh
