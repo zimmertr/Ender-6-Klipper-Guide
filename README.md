@@ -37,7 +37,7 @@ Before you flash anything to your printer or take anything apart, you need to us
 - **Raspberry Pi & Buck Converter Mount:** [here](https://www.thingiverse.com/thing:6273981)
   - Since Klipper runs on a Raspberry Pi which you will power via the printer's power supply, you need a place to install the new components. I chose the electronics compartment below the printer. This model does not shield the buck converter, so take care when handling it as there is a risk of being shocked. Buck converters come in different shapes and sizes, so make sure you compare the dimensions of this part to the one you choose to purchase.
 
-- **PIT TFT43 Screen Adapter**: [here](https://www.thingiverse.com/thing:5246155)
+- **PI TFT43 Screen Adapter**: [here](https://www.thingiverse.com/thing:5246155)
   - KlipperScreen does not work with the default touchscreen for the Ender 6. There is a fork floating around that adds support, but it is unmaintained and the code was never merged upstream. In order to preserve the functionality of a touchscreen, you must replace it with one that is compatible. I chose the `PI TFT43` because it fits well in the housing. However, you will need to print an adapter to mount it correctly.
 
 - ***Optional* - Gantry Fan Mount**: [here](https://www.thingiverse.com/thing:6784980)
