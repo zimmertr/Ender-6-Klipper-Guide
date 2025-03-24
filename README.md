@@ -50,6 +50,8 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 - **Raspberry Pi**: [here](https://www.amazon.com/dp/B0CPWH8FL9)
   - I bought the 5, you can probably get away with something cheaper if you wish. In hindsight the 4 might actually be a better choice if you plan to use a webcam as it supports hardware encoding.
+  
+   NOTE: A Raspberry Pi Zero (2)(W) doesn't work with DSI displays. The connector looks the same as the CSI port, but this is only meant for camera's. So make sure you use a Pi that works with your display.
 
 - **MicroSD Card**
 
