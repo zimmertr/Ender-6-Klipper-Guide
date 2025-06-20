@@ -19,7 +19,7 @@
     + [Step 3 - Installing the Replacement Touchscreen](#step-3---installing-the-replacement-touchscreen)
     + [Step 4 - Installing the Raspberry Pi and Buck Converter](#step-4---installing-the-raspberry-pi-and-buck-converter)
     + [Step 5 - Configuring the Z-Offset and Bed Mesh](#step-5---configuring-the-z-offset-and-bed-mesh)
-    + [Step 6 - Configure Macros and Slicer](#step-6---configure-macros-and-slicer)
+    + [Step 6 - Configure Slicer](#step-6---configure-slicer)
 * [Optional Steps](#optional-steps)
   - [Configure a Webcam](#configure-a-webcam)
   - [Configure a USB Wireless Adapter](#configure-a-usb-wireless-adapter)
@@ -122,12 +122,14 @@ Before you flash anything to your printer or take anything apart, you need to us
 2. Insert the Micro SD Card into the Raspberry Pi and power it on with a USB-C cable. Wait a minute and SSH into the device. 
 
 3. Run `apt update` to update Debian’s package repositories and then install `git` and any other tools you like such as `vim`, `lm-sensors`, etc. 
+
    ```bash
    sudo apt update
    sudo apt-get install git
    ```
 
 4. Install [Klipper](https://github.com/Klipper3d/klipper), [Moonraker](https://github.com/Arksine/moonraker), [Mainsail](https://github.com/mainsail-crew/mainsail), [Fluidd](https://github.com/fluidd-core/fluidd), [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen), [Crowsnest](https://github.com/mainsail-crew/crowsnest), [Mobileraker Companion](https://github.com/Clon1998/mobileraker_companion), and whatever other tools you require using whichever method you prefer. The current popular method is with an interactive tool named [KIAUH](https://github.com/dw-0/kiauh). If you’ve done everything correctly, KIAUH will have littered your home directory with directories and everything should be automatically configured for you.
+
    ```bash
    git clone https://github.com/dw-0/kiauh.git
    ./kiauh/kiauh.sh
@@ -217,6 +219,7 @@ Before you flash anything to your printer or take anything apart, you need to us
    ```
 
 6. Restart Klipper so the changes take effect. Then home the nozzle and perform `PROBE_CALIBRATE` to test that your `position_min` is functioning correctly. If it is, when you attempt to lower the nozzle beneath `position_min`, Klipper should throw an error instead of colliding the nozzle with the bed. 
+
    ```bash
    sudo systemctl restart klipper
    ```
@@ -242,9 +245,49 @@ Before you flash anything to your printer or take anything apart, you need to us
 
 <hr>
 
-### Step 6 - Configure Macros and Slicer
+### Step 6 - Configure Slicer
 
-:warning: TODO: Finish
+Now that the printer is up and running, you can set configure your Slicer and Macros to take advantage of Klipper. I use Cura for slicing my models which allows you to define both a Start and End G-code configuration.
+
+My Start G-code configuration heats the bed and nozzle, retracts the filament to avoid oozing, generates a bed mesh, and finally draws a purge line:
+
+```gcode
+M190 S{material_bed_temperature_layer_0}    ; Wait for bed to reach target temp
+M109 S{material_print_temperature_layer_0}  ; Wait for nozzle to reach target temp
+
+G1 E-5 F1800        ; Retract 5mm to mitigate oozing
+
+G92 E0              ; Reset extruder position
+G28                 ; Home all axes
+BED_MESH_CALIBRATE  ; Probe and create bed mesh
+
+G1 X1 Y10 F3000     ; Move to bottom-left corner
+G1 Z0.3 F3000       ; Lower to purge height
+G1 E5 F1800         ; Extract 5mm to prepare for purge
+G1 Y250 E30 F1000   ; Purge 250mm along Y-Axis
+
+G92 E0              ; Reset extruder position
+G1 Z1 F3000         ; Z-hop to avoid dragging
+
+```
+
+I simply retained the End G-code configuration since it is sufficient as is:
+
+```gcode
+G91               ;Relative positioning
+G1 E-2 F2700      ;Retract a bit
+G1 E-2 Z0.2 F2400	;Retract and raise Z
+G1 X5 Y5 F3000    ;Wipe out
+G1 Z10            ;Raise Z more
+G90               ;Absolute positioning
+
+G28 X Y           ;Present print
+M106 S0           ;Turn-off fan
+M104 S0           ;Turn-off hotend
+M140 S0           ;Turn-off bed
+
+M84 X Y E         ;Disable all steppers but Z
+```
 
 <hr>
 
