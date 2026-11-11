@@ -6,7 +6,7 @@ This repo took a trimmed set of the files a new project starts with (zimmertr/yg
 
 ## Rules
 
-- **Actions are pinned to commit SHAs** with the version in a comment. Dependabot bumps them.
+- **Actions are pinned to commit SHAs** with the version in a comment. Renovate bumps them.
 
 ## Issues
 
@@ -15,10 +15,10 @@ File issues with the `create-issue` skill from zimmertr/ai-config: the two-sente
 - **The reader**: TJ, who owns the printer and wrote the guide.
 - **The gates**: `PR Title / PR Title` and the three `Lint /` checks pass; the README changes only to stay accurate.
 - **The constraints**: no secrets in the repo; the PR title is `type(scope): summary`.
-- **The areas**: `guide` (the README), `ci` (the workflows and Dependabot), `security`.
+- **The areas**: `guide` (the README), `ci` (the workflows and Renovate), `security`.
 
 ## Working in this repo
 
 - Work in a fresh clone in the session's scratchpad, never in TJ's checkout. Branch from the latest `origin/main`.
 - Everything reaches main through a squash-merged PR. Never push to main.
-- CI runs on zimmertr/yggdrasil's `pr-title` and `lint` modules, pinned by commit SHA with the version beside it. Dependabot bumps the pin, and a patch or minor merges itself after three days.
+- CI runs on zimmertr/yggdrasil's `pr-title` and `lint` modules, pinned by commit SHA with the version beside it. Renovate bumps the pin, and a patch or minor merges itself.
